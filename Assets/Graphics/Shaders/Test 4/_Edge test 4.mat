@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: _Edge test 2
-  m_Shader: {fileID: -6465566751694194690, guid: 68c04eb583e31e94c9b0fb9d9ed9475d, type: 3}
+  m_Name: _Edge test 4
+  m_Shader: {fileID: -6465566751694194690, guid: a428362ba87268f428307df3f423e5ae, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -38,9 +38,9 @@ Material:
     m_Ints: []
     m_Floats:
     - _Comparation: 0.022
-    - _Float: 0.022
-    - _Separation: 0
-    - _Threshold: 0.067
+    - _Float: 3
+    - _Separation: 0.0007
+    - _Threshold: 0.04
     m_Colors:
     - _Color_1: {r: 0.8117647, g: 0.8980392, b: 0.8620915, a: 1}
     - _Color_2: {r: 0.603, g: 0.2851587, b: 0.14894098, a: 1}
