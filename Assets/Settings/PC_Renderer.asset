@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Name: FullScreenPassRendererFeature
   m_EditorClassIdentifier: 
   m_Active: 1
-  injectionPoint: 600
+  injectionPoint: 550
   fetchColorBuffer: 1
   requirements: 0
   passMaterial: {fileID: 2100000, guid: d4f4f9d4bfb34d348b7bcf31611da546, type: 2}
@@ -148,17 +148,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f62c9c65cf3354c93be831c8bc075510, type: 3}
   m_Name: ScreenSpaceAmbientOcclusion
   m_EditorClassIdentifier: 
-  m_Active: 0
+  m_Active: 1
   m_Settings:
-    AOMethod: 0
+    AOMethod: 1
     Downsample: 0
-    AfterOpaque: 0
-    Source: 1
-    NormalSamples: 2
-    Intensity: 0.4
+    AfterOpaque: 1
+    Source: 0
+    NormalSamples: 0
+    Intensity: 0.25
     DirectLightingStrength: 0.25
-    Radius: 0.3
+    Radius: 0.03
     Samples: 0
-    BlurQuality: 0
+    BlurQuality: 2
     Falloff: 100
     SampleCount: -1
