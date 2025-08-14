@@ -3,12 +3,12 @@
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
-  m_ObjectHideFlags: 32
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: _Custom Shadow
-  m_Shader: {fileID: -6465566751694194690, guid: 8283a2f979b36b841a5f002ca39bdb1b, type: 3}
+  m_Name: _Sobel Edge Depth
+  m_Shader: {fileID: -6465566751694194690, guid: 234ae12c7ada40341905891727a6f0e6, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -18,16 +18,11 @@ Material:
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
-  disabledShaderPasses:
-  - MOTIONVECTORS
+  disabledShaderPasses: []
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _BaseMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -42,23 +37,23 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Float: 0.04
-    - _Float_1: 1962.8
-    - _QueueControl: 0
-    - _QueueOffset: 0
-    m_Colors: []
+    - _Blend: 0.522
+    - _Boolean: 1
+    - _Comparation: 0.022
+    - _Distortion_Power: 0.005
+    - _Distortion_Scale: 8.18
+    - _Float: 100
+    - _Float_1: 0.022
+    - _Invert: 0
+    - _Line_Power: -1
+    - _Line_Thickness: 0.001
+    - _Lines_Power: 1
+    - _Noise: 0.015
+    - _Separation: 0.0006
+    - _Threshold: 0.09
+    m_Colors:
+    - _Color_1: {r: 0.8117647, g: 0.8980392, b: 0.8620915, a: 1}
+    - _Color_2: {r: 0.603, g: 0.2851587, b: 0.14894098, a: 1}
+    - _Color_3: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &1419198714293086410
-MonoBehaviour:
-  m_ObjectHideFlags: 11
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 10
