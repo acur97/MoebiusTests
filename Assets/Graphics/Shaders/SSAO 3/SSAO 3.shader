@@ -22,7 +22,7 @@ Shader "Custom/SSAO 3"
             #pragma fragment frag
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
-            #define MOD3 float3(0.1031, 0.11369, 0.13787)
+            #define MOD3 half3(0.1031, 0.11369, 0.13787)
 
             TEXTURE2D(_CameraDepthTexture);
             SAMPLER(sampler_CameraDepthTexture);
@@ -31,16 +31,16 @@ Shader "Custom/SSAO 3"
             SAMPLER(sampler_CameraNormalsTexture);
 
             int _SAMPLES;
-            float _INTENSITY;
-            float _SCALE;
-            float _BIAS;
-            float _SAMPLE_RAD;
-            float _MAX_DISTANCE;
+            half _INTENSITY;
+            half _SCALE;
+            half _BIAS;
+            half _SAMPLE_RAD;
+            half _MAX_DISTANCE;
 
             struct v2f
             {
-                float4 pos : SV_POSITION;
-                float2 uv : TEXCOORD0;
+                half4 pos : SV_POSITION;
+                half2 uv : TEXCOORD0;
             };
 
             v2f vert(uint vertexID : SV_VertexID)
@@ -51,54 +51,54 @@ Shader "Custom/SSAO 3"
                 return o;
             }
 
-            float hash12(float2 p)
+            half hash12(half2 p)
             {
-                float3 p3  = frac(float3(p.x, p.y, p.x) * MOD3);
+                half3 p3  = frac(half3(p.x, p.y, p.x) * MOD3);
                 p3 += dot(p3, p3.yzx + 19.19);
                 return frac((p3.x + p3.y) * p3.z);
             }
 
-            float2 hash22(float2 p)
+            half2 hash22(half2 p)
             {
-                float3 p3 = frac(float3(p.x, p.y, p.x) * MOD3);
+                half3 p3 = frac(half3(p.x, p.y, p.x) * MOD3);
                 p3 += dot(p3, p3.yzx + 19.19);
-                return frac(float2((p3.x + p3.y)*p3.z, (p3.x + p3.z)*p3.y));
+                return frac(half2((p3.x + p3.y)*p3.z, (p3.x + p3.z)*p3.y));
             }
 
-            float3 GetViewPos(float2 uv)
+            half3 GetViewPos(half2 uv)
             {
-                float depth = SAMPLE_TEXTURE2D(_CameraDepthTexture, sampler_CameraDepthTexture, uv).r;
+                half depth = SAMPLE_TEXTURE2D(_CameraDepthTexture, sampler_CameraDepthTexture, uv).r;
                 // depth = LinearEyeDepth(depth, _ZBufferParams);
-                float3 viewPos = ComputeViewSpacePosition(uv, depth, unity_CameraInvProjection);
+                half3 viewPos = ComputeViewSpacePosition(uv, depth, unity_CameraInvProjection);
                 return viewPos;
             }
 
-            float3 GetNormal(float2 uv)
+            half3 GetNormal(half2 uv)
             {
                 return SAMPLE_TEXTURE2D(_CameraNormalsTexture, sampler_CameraNormalsTexture, uv).xyz * 2.0 - 1.0;
             }
 
-            float doAmbientOcclusion(float2 baseUv, float2 offset, float3 p, float3 cnorm)
+            half doAmbientOcclusion(half2 baseUv, half2 offset, half3 p, half3 cnorm)
             {
-                float3 diff = GetViewPos(baseUv + offset) - p;
-                float l = length(diff);
-                float3 v = diff / l;
-                float d = l * _SCALE;
-                float ao = max(0.0, dot(cnorm, v) - _BIAS) * (1.0 / (1.0 + d));
+                half3 diff = GetViewPos(baseUv + offset) - p;
+                half l = length(diff);
+                half3 v = diff / l;
+                half d = l * _SCALE;
+                half ao = max(0.0, dot(cnorm, v) - _BIAS) * (1.0 / (1.0 + d));
                 ao *= smoothstep(_MAX_DISTANCE, _MAX_DISTANCE * 0.5, l);
                 return ao;
             }
 
-            float spiralAO(float2 uv, float3 p, float3 n, float rad)
+            half spiralAO(half2 uv, half3 p, half3 n, half rad)
             {
-                float goldenAngle = 2.4;
-                float ao = 0.0;
-                float inv = 1.0 / _SAMPLES;
-                float radius = 0.0;
+                half goldenAngle = 2.4;
+                half ao = 0.0;
+                half inv = 1.0 / _SAMPLES;
+                half radius = 0.0;
 
-                float rotatePhase = hash12(uv * 100.0) * 6.2831853;
-                float rStep = inv * rad;
-                float2 spiralUV;
+                half rotatePhase = hash12(uv * 100.0) * 6.2831853;
+                half rStep = inv * rad;
+                half2 spiralUV;
 
                 [Unroll]
                 for (int i = 0; i < _SAMPLES; i++)
@@ -114,16 +114,16 @@ Shader "Custom/SSAO 3"
 
             half4 frag(v2f i) : SV_Target
             {
-                float2 uv = i.uv;
-                float3 p = GetViewPos(uv);
-                float3 n = normalize(GetNormal(uv));
+                half2 uv = i.uv;
+                half3 p = GetViewPos(uv);
+                half3 n = normalize(GetNormal(uv));
 
-                float rad = _SAMPLE_RAD / max(p.z, 0.0001);
-                float ao = spiralAO(uv, p, n, rad);
+                half rad = _SAMPLE_RAD / max(p.z, 0.0001);
+                half ao = spiralAO(uv, p, n, rad);
                 ao = 1.0 - ao * _INTENSITY;
                 ao = 1 - ao;
 
-                return float4(ao, ao, ao, 1.0);
+                return half4(ao, ao, ao, 1.0);
             }
             ENDHLSL
         }

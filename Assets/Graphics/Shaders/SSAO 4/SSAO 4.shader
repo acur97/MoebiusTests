@@ -2,39 +2,64 @@ Shader "Custom/SSAO 4"
 {
     Properties
     {
-        _NoiseTexture("Noise Texture", 2D) = "white"
-        _Intensity("SSAO Intensity", Float) = 1.1
-        _Intensity("SSAO Intensity", Float) = 1.1
-        _Intensity("SSAO Intensity", Float) = 1.1
-        _Intensity("SSAO Intensity", Float) = 1.1
-        _Intensity("SSAO Intensity", Float) = 1.1
+        _Radius("Radius", Range(0, 0.05)) = 0.2
+        _MinRadius("Min Radius", Range(0, 0.1)) = 8.0
+        _Bias("Bias", Range(0, 0.001)) = 0.05
+        _Intensity("Intensity", Float) = 1.0
+        _Intensity2("Intensity2", Float) = 1.0
+        _SampleCount("Sample Count", Range(1, 32)) = 16
+        _NoiseScale("Noise Scale", Float) = 8.0
+        _NoiseTex("Noise Texture", 2D) = "white" {}
+
+        _PatternTexture("Pattern Texture", 2D) = "black"
+        _PatternIntensity("Pattern Intensity", Float) = 1
+        _PatternRepetition("Pattern Repetition", Float) = 1
+        _PatternRotate("Pattern Rotate", Float) = 0
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" "Queue"="Transparent" }
+        Tags { "RenderType"="Opaque" "Queue"="Overlay" }
         Pass
         {
-            Name "FullScreenPass"
+            Name "SSAO"
+            Tags { "LightMode"="UniversalForward" }
+
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
-            
-            TEXTURE2D(_NoiseTexture);
-            SAMPLER(sampler_NoiseTexture);
+            #define MOD3 half3(0.1031, 0.11369, 0.13787)
 
-            TEXTURE2D(_CameraNormalsTexture);
-            SAMPLER(sampler_CameraNormalsTexture);
+            float _Radius;
+            float _MinRadius;
+            float _Bias;
+            float _Intensity;
+            float _Intensity2;
+            int _SampleCount;
+            float _NoiseScale;
+
+            TEXTURE2D(_BlitTexture);
+            SAMPLER(sampler_BlitTexture);
 
             TEXTURE2D(_CameraDepthTexture);
             SAMPLER(sampler_CameraDepthTexture);
 
-            float _Intensity;
+            TEXTURE2D(_CameraNormalsTexture);
+            SAMPLER(sampler_CameraNormalsTexture);
+
+            TEXTURE2D(_NoiseTex);
+            SAMPLER(sampler_NoiseTex);
+
+			TEXTURE2D(_PatternTexture);
+			SAMPLER(sampler_PatternTexture);
+			half _PatternIntensity;
+			half _PatternRepetition;
+			half _PatternRotate;
 
             struct v2f
             {
-                float4 pos : SV_POSITION;
-                float2 uv : TEXCOORD0;
+                half4 pos : SV_POSITION;
+                half2 uv : TEXCOORD0;
             };
 
             v2f vert(uint vertexID : SV_VertexID)
@@ -45,57 +70,95 @@ Shader "Custom/SSAO 4"
                 return o;
             }
 
-            float3 getPosition(float2 uv)
+            float3 ComputeViewSpacePosition(float2 uv, float rawDepth)
             {
-                return SAMPLE_TEXTURE2D(_CameraDepthTexture, sampler_CameraDepthTexture, uv).xyz;
+                float2 ndc = uv * 2.0 - 1.0;
+                float4 clipPos = float4(ndc, rawDepth, 1.0);
+                float4 viewPos = mul(unity_CameraInvProjection, clipPos);
+                return viewPos.xyz / viewPos.w;
             }
 
-            float3 getNormal(float2 uv)
+            float3 GetViewSpaceNormal(float2 uv)
             {
-                return SAMPLE_TEXTURE2D(_CameraNormalsTexture, sampler_CameraNormalsTexture, uv).xyz;
+                float4 enc = SAMPLE_TEXTURE2D(_CameraNormalsTexture, sampler_CameraNormalsTexture, uv);
+                return normalize(enc.xyz * 2.0 - 1.0);
             }
 
-            float2 getRandom(float2 uv)
+            float2 RotateUV(float2 uv, float angleDeg)
             {
-                return normalize(SAMPLE_TEXTURE2D(_NoiseTexture, sampler_NoiseTexture, uv).xy * 2.0 - 1.0);
-            }
+                float angle = radians(angleDeg); // convertir a radianes
+                float s = sin(angle);
+                float c = cos(angle);
 
-            float doAmbientOcclusion(float2 uv, float2 offset, float3 p, float3 n)
-            {
-                float3 diff = getPosition(uv + offset) - p;
-                float3 v = normalize(diff);
-                float d = length(v) * _Scale;
-                float ao = max(0.0, dot(n, v) - _Bias) * (1.0 / (1.0 + d)) * _Intensity;
-                float l = length(diff);
-                ao *= smoothstep(_DisConstraint, _DisConstraint * 0.5, l);
-                return ao;
+                // trasladar al centro (0.5,0.5)
+                uv -= 0.5;
+
+                // rotar
+                float2x2 rot = float2x2(c, -s, s, c);
+                uv = mul(rot, uv);
+
+                // regresar a espacio de textura
+                uv += 0.5;
+
+                return uv;
             }
             
-            half4 frag(v2f i) : SV_Target
+            half hash12(half2 p)
             {
-                float2 uv = input.uv;
-                float3 p = getPosition(uv);
-                float3 n = getNormal(uv);
-                float2 rand = getRandom(uv);
+                half3 p3  = frac(half3(p.x, p.y, p.x) * MOD3);
+                p3 += dot(p3, p3.yzx + 19.19);
+                return frac((p3.x + p3.y) * p3.z);
+            }
 
-                const float2 dire[4] = { float2(1,0), float2(-1,0), float2(0,1), float2(0,-1) };
+            half2 hash22(half2 p)
+            {
+                half3 p3 = frac(half3(p.x, p.y, p.x) * MOD3);
+                p3 += dot(p3, p3.yzx + 19.19);
+                return frac(half2((p3.x + p3.y)*p3.z, (p3.x + p3.z)*p3.y));
+            }
 
-                float ssao = 0.0;
-                int iterations = 4;
-                for (int i = 0; i < iterations; i++) {
-                    float2 coord1 = reflect(dire[i], rand) * _SampleRad;
-                    float2 coord2 = float2(coord1.x * cos(radians(45.0)) - coord1.y * sin(radians(45.0)), 
-                                           coord1.x * cos(radians(45.0)) + coord1.y * sin(radians(45.0)));
-                    ssao += doAmbientOcclusion(uv, coord1 * 0.25, p, n);
-                    ssao += doAmbientOcclusion(uv, coord2 * 0.5, p, n);
-                    ssao += doAmbientOcclusion(uv, coord1 * 0.75, p, n);
-                    ssao += doAmbientOcclusion(uv, coord2, p, n);
+            float4 frag(v2f i) : SV_Target
+            {
+                float2 uv = i.uv;
+
+                float rawDepth = SAMPLE_TEXTURE2D(_CameraDepthTexture, sampler_CameraDepthTexture, uv).r;
+                float3 posVS = ComputeViewSpacePosition(uv, rawDepth);
+                float3 normalVS = GetViewSpaceNormal(uv);
+
+                float2 noiseUV = uv * _NoiseScale;
+                float2 rand = SAMPLE_TEXTURE2D(_NoiseTex, sampler_NoiseTex, noiseUV).rg * 2.0 - 1.0;
+                // half2 rand = normalize(hash22(uv * 100.0) * 200.0 - 1.0);
+                float2x2 rot = float2x2(rand.x, -rand.y, rand.y, rand.x);
+
+                float occlusion = 0.0;
+                // float2 dir = float2(0.0, _Radius);
+                float2 dir = float2(_MinRadius, _Radius);
+
+                for (int s = 0; s < _SampleCount; s++)
+                {
+                    float2 sampleUV = uv + dir;
+                    float sampleDepth = SAMPLE_TEXTURE2D(_CameraDepthTexture, sampler_CameraDepthTexture, sampleUV).r;
+                    float3 sampleVS = ComputeViewSpacePosition(sampleUV, sampleDepth);
+
+                    float3 v = sampleVS - posVS;
+                    float dist = length(v);
+                    float3 vDir = v / (dist + 1e-5);
+
+                    float NdotD = saturate(dot(normalVS, vDir));
+
+                    occlusion += step(sampleVS.z, posVS.z - _Bias) * NdotD;
+
+                    dir = mul(rot, dir);
                 }
 
-                ssao /= (iterations * 4.0);
-                ssao = 1.0 - ssao * _Intensity;
+                occlusion = 1.0 - (occlusion / _SampleCount) * _Intensity;
+                return float4(occlusion.xxx, 1.0);
+                
+                occlusion = (1 - occlusion) * (1 - saturate(SAMPLE_TEXTURE2D(_PatternTexture, sampler_PatternTexture, RotateUV(i.uv, _PatternRotate) * _PatternRepetition).r * _PatternIntensity));
+                occlusion = 1 - occlusion * _Intensity2;
 
-                return float4(ssao, ssao, ssao, 1.0);
+                half3 blit = SAMPLE_TEXTURE2D(_BlitTexture, sampler_BlitTexture, i.uv).rgb;
+                return half4(blit.r * occlusion, blit.g * occlusion, blit.b * occlusion, 1.0);
             }
             ENDHLSL
         }

@@ -30,13 +30,13 @@ Shader "Custom/SSAO 2"
             SAMPLER(sampler_NoiseTexture);
 
             int _Samples;
-			float _Radius;
-			float _Bias;
+			half _Radius;
+			half _Bias;
 
             struct v2f
             {
-                float4 pos : SV_POSITION;
-                float2 uv : TEXCOORD0;
+                half4 pos : SV_POSITION;
+                half2 uv : TEXCOORD0;
             };
 
             v2f vert(uint vertexID : SV_VertexID)
@@ -47,52 +47,47 @@ Shader "Custom/SSAO 2"
                 return o;
             }
 
-            float GetLinearDepth(float2 uv)
+            half GetLinearDepth(half2 uv)
             {
-                float depth01 = SAMPLE_TEXTURE2D(_CameraDepthTexture, sampler_CameraDepthTexture, uv).r;
+                half depth01 = SAMPLE_TEXTURE2D(_CameraDepthTexture, sampler_CameraDepthTexture, uv).r;
                 return LinearEyeDepth(depth01, _ZBufferParams);
             }
 
             half4 frag(v2f i) : SV_Target
             {
-                // Near & far
-                float farClip = _ProjectionParams.z;
+                half farClip = _ProjectionParams.z;
 
-                // Normals (view space)
-                float3 normalVS = SAMPLE_TEXTURE2D(_CameraNormalsTexture, sampler_CameraNormalsTexture, i.uv).xyz * 2.0 - 1.0;
+                half3 normalVS = SAMPLE_TEXTURE2D(_CameraNormalsTexture, sampler_CameraNormalsTexture, i.uv).xyz * 2.0 - 1.0;
                 normalVS = normalize(normalVS);
 
-                // Depth
-                float depth = GetLinearDepth(i.uv);
+                half depth = GetLinearDepth(i.uv);
+                half scale = _Radius / depth;
 
-                float scale = _Radius / depth;
+                half ao = 0.0;
 
-                float ao = 0.0;
-
-                [Unroll] for (int j = 0; j < _Samples; j++)
+                [Unroll]
+                for (int j = 0; j < _Samples; j++)
                 {
-                    // Random normal
-                    float2 noiseUV = (i.uv * _ScreenParams.xy + 23.71 * j) / _ScreenParams.xy;
-                    float3 randNor = SAMPLE_TEXTURE2D(_NoiseTexture, sampler_NoiseTexture, noiseUV).xyz * 2.0 - 1.0;
+                    half2 noiseUV = (i.uv * _ScreenParams.xy + 23.71 * j) / _ScreenParams.xy;
+                    half3 randNor = SAMPLE_TEXTURE2D(_NoiseTexture, sampler_NoiseTexture, noiseUV).xyz * 2.0 - 1.0;
 
                     if (dot(normalVS, randNor) < 0.0)
                     {
 						randNor *= -1.0;
                     }
 
-                    float2 off = randNor.xy * scale;
-                    float2 sampleUV = i.uv + off;
+                    half2 off = randNor.xy * scale;
+                    half2 sampleUV = i.uv + off;
 
-                    // Sample normals and depth
-                    float3 sampleNormalVS = SAMPLE_TEXTURE2D(_CameraNormalsTexture, sampler_CameraNormalsTexture, sampleUV).xyz * 2.0 - 1.0;
+                    half3 sampleNormalVS = SAMPLE_TEXTURE2D(_CameraNormalsTexture, sampler_CameraNormalsTexture, sampleUV).xyz * 2.0 - 1.0;
                     sampleNormalVS = normalize(sampleNormalVS);
 
-                    float sampleDepth = GetLinearDepth(sampleUV);
-                    float depthDelta = depth - sampleDepth;
+                    half sampleDepth = GetLinearDepth(sampleUV);
+                    half depthDelta = depth - sampleDepth;
 
-                    float3 sampleDir = float3(randNor.xy * _Radius, depthDelta);
+                    half3 sampleDir = half3(randNor.xy * _Radius, depthDelta);
 
-                    float occ = max(0.0, dot(normalVS, normalize(sampleDir)) - _Bias) / (length(sampleDir) + 1.0);
+                    half occ = max(0.0, dot(normalVS, normalize(sampleDir)) - _Bias) / (length(sampleDir) + 1.0);
 
                     ao += 1.0 - occ;
                 }
