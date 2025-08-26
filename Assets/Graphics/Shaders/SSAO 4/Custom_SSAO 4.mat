@@ -40,35 +40,38 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _PatternTexture:
-        m_Texture: {fileID: 2800000, guid: cb29284c52850fe41b2cc98ff07b2e06, type: 3}
+        m_Texture: {fileID: 2800000, guid: e172935f9e9af6b43bfb030515df2a3e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - _BIAS: -0.5
     - _Beta: 0.02
-    - _Bias: 0.0001
+    - _Bias: 0.0002
+    - _Blend: 1
     - _Contrast: 1.5
     - _Epsilon: 0.001
     - _Falloff: 12
     - _INTENSITY: 2.5
     - _Intensity: 10
-    - _Intensity2: 3
+    - _Intensity2: 2
     - _MAX_DISTANCE: 0.1
     - _MinRadius: 0
-    - _NoiseScale: 8
+    - _NoiseScale: 16
+    - _NoiseScale2: 6.3
     - _PatternIntensity: 1
-    - _PatternRepetition: 2
-    - _PatternRotate: -21.7
-    - _Radius: 0.0114
+    - _PatternRepetition: 10
+    - _PatternRotate: 40.67
+    - _Radius: 0.000005
     - _SAMPLES: 8
     - _SAMPLE_RAD: 0.006
     - _SCALE: 2.5
-    - _SampleCount: 8
+    - _SampleCount: 9
     - _SampleRadius: 0.5
     - _Test: 0.058
     - _kBeta: 0.02
     - _kEpsilon: 0.001
-    m_Colors: []
+    m_Colors:
+    - _Color: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
