@@ -40,7 +40,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _PatternTexture:
-        m_Texture: {fileID: 2800000, guid: e172935f9e9af6b43bfb030515df2a3e, type: 3}
+        m_Texture: {fileID: 2800000, guid: cb29284c52850fe41b2cc98ff07b2e06, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
@@ -58,10 +58,10 @@ Material:
     - _MAX_DISTANCE: 0.1
     - _MinRadius: 0
     - _NoiseScale: 16
-    - _NoiseScale2: 6.3
+    - _NoiseScale2: 180
     - _PatternIntensity: 1
-    - _PatternRepetition: 10
-    - _PatternRotate: 40.67
+    - _PatternRepetition: 2
+    - _PatternRotate: -41.79
     - _Radius: 0.000005
     - _SAMPLES: 8
     - _SAMPLE_RAD: 0.006

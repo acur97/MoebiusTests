@@ -27,18 +27,27 @@ Material:
         m_Texture: {fileID: 2800000, guid: 11facbb481cd6a44b9d470e2da494381, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _PatternTexture:
+        m_Texture: {fileID: 2800000, guid: cb29284c52850fe41b2cc98ff07b2e06, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BIAS: 0.05
+    - _BIAS: -0.06
     - _BlendAmount: 0.75
     - _EdgeThreshold: 0.1
     - _INTENSITY: 4.5
-    - _MAX_DISTANCE: 0.07
+    - _Intensity2: 2
+    - _MAX_DISTANCE: 1
     - _Offset: 16
-    - _SAMPLES: 16
+    - _PatternIntensity: 1
+    - _PatternRepetition: 2
+    - _PatternRotate: -35.67
+    - _SAMPLES: 6
     - _SAMPLE_RAD: 0.01
     - _SCALE: 2.5
     - _Samples: 8
-    m_Colors: []
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

@@ -8,6 +8,12 @@ Shader "Custom/SSAO 3"
         _BIAS("_BIAS", Float) = 0.05
         _SAMPLE_RAD("_SAMPLE_RAD", Float) = 0.02
         _MAX_DISTANCE("_MAX_DISTANCE", Float) = 0.07
+        
+        _Intensity2("Intensity2", Float) = 1.0
+        _PatternTexture("Pattern Texture", 2D) = "black"
+        _PatternIntensity("Pattern Intensity", Float) = 1
+        _PatternRepetition("Pattern Repetition", Float) = 1
+        _PatternRotate("Pattern Rotate", Float) = 0
     }
     SubShader
     {
@@ -36,6 +42,16 @@ Shader "Custom/SSAO 3"
             half _BIAS;
             half _SAMPLE_RAD;
             half _MAX_DISTANCE;
+            
+            half _Intensity2;
+			TEXTURE2D(_PatternTexture);
+			SAMPLER(sampler_PatternTexture);
+			half _PatternIntensity;
+			half _PatternRepetition;
+			half _PatternRotate;
+
+            TEXTURE2D(_BlitTexture);
+            SAMPLER(sampler_BlitTexture);
 
             struct v2f
             {
@@ -112,6 +128,25 @@ Shader "Custom/SSAO 3"
                 return ao * inv;
             }
 
+            half2 RotateUV(half2 uv, half angleDeg)
+            {
+                half angle = radians(angleDeg); // convertir a radianes
+                half s = sin(angle);
+                half c = cos(angle);
+
+                // trasladar al centro (0.5,0.5)
+                uv -= 0.5;
+
+                // rotar
+                half2x2 rot = half2x2(c, -s, s, c);
+                uv = mul(rot, uv);
+
+                // regresar a espacio de textura
+                uv += 0.5;
+
+                return uv;
+            }
+
             half4 frag(v2f i) : SV_Target
             {
                 half2 uv = i.uv;
@@ -123,7 +158,13 @@ Shader "Custom/SSAO 3"
                 ao = 1.0 - ao * _INTENSITY;
                 ao = 1 - ao;
 
-                return half4(ao, ao, ao, 1.0);
+                ao = (1 - ao) * (1 - saturate(SAMPLE_TEXTURE2D(_PatternTexture, sampler_PatternTexture, RotateUV(i.uv, _PatternRotate) * _PatternRepetition).r * _PatternIntensity));
+                ao = clamp(1 - (ao * _Intensity2), 0, 1);
+                
+                half4 blit = SAMPLE_TEXTURE2D(_BlitTexture, sampler_BlitTexture, i.uv);
+
+                // return half4(ao, ao, ao, 1.0);
+                return blit * ao.xxxx;
             }
             ENDHLSL
         }

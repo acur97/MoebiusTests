@@ -36,7 +36,7 @@ Material:
     m_Floats:
     - _BlendAmount: 0.75
     - _EdgeThreshold: 0.1
-    - _Intensity: 8
+    - _Intensity: 2
     - _Intensity2: 1
     - _Limit: 0
     - _LimitPasses: 0.25
@@ -44,7 +44,7 @@ Material:
     - _PatternIntensity: 1
     - _PatternRepetition: 8
     - _PatternRotate: -60
-    - _Samples: 2
+    - _Samples: 1
     - _Test: 10000
     m_Colors: []
   m_BuildTextureStacks: []

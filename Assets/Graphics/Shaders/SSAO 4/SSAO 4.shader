@@ -310,7 +310,6 @@ Shader "Custom/SSAO 4"
 
                 half2 noiseUV = uv * _NoiseScale;
                 // half2 rand = SAMPLE_TEXTURE2D(_NoiseTex, sampler_NoiseTex, noiseUV).rg * 2.0 - 1.0;
-                // half2 rand = normalize(hash22(uv * 100.0) * 200.0 - 1.0);
                 half2 rand = hash12(uv * _NoiseScale2) * 6.2831853;
                 half2x2 rot = half2x2(rand.x, -rand.y, rand.y, rand.x);
 
@@ -337,7 +336,7 @@ Shader "Custom/SSAO 4"
                 
                 occlusion = 1 - (occlusion / _SampleCount) * _Intensity;
                 // occlusion = (occlusion / _SampleCount) * _Intensity;
-                return half4(occlusion.xxx, 1.0);
+                // return half4(occlusion.xxx, 1.0);
                 
                 occlusion = (1 - occlusion) * (1 - saturate(SAMPLE_TEXTURE2D(_PatternTexture, sampler_PatternTexture, RotateUV(i.uv, _PatternRotate) * _PatternRepetition).r * _PatternIntensity));
                 // occlusion = 1 - occlusion * _Intensity2;
