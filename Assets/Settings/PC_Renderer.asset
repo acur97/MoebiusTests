@@ -47,10 +47,11 @@ MonoBehaviour:
   m_RendererFeatures:
   - {fileID: 7833122117494664109}
   - {fileID: 5978913428298692454}
+  - {fileID: 6108246676795794907}
   - {fileID: 6024769249891881220}
   - {fileID: 3327596656567940321}
   - {fileID: -1851091519805002750}
-  m_RendererFeatureMap: ad6b866f10d7b46c66778edc155ef95204918051b6479c53e174825e87ff2d2e02ec48fb119a4fe6
+  m_RendererFeatureMap: ad6b866f10d7b46c66778edc155ef952dba5df5afdd9c45404918051b6479c53e174825e87ff2d2e02ec48fb119a4fe6
   m_UseNativeRenderPass: 1
   xrSystemData: {fileID: 0}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
@@ -136,6 +137,26 @@ MonoBehaviour:
   fetchColorBuffer: 1
   requirements: 0
   passMaterial: {fileID: 2100000, guid: b0310a773a015e24c90800a7af87f2cc, type: 2}
+  passIndex: 0
+  bindDepthStencilAttachment: 0
+  m_Version: 1
+--- !u!114 &6108246676795794907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b00045f12942b46c698459096c89274e, type: 3}
+  m_Name: Sobel Edge Depth
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.FullScreenPassRendererFeature
+  m_Active: 1
+  injectionPoint: 600
+  fetchColorBuffer: 1
+  requirements: 1
+  passMaterial: {fileID: 2100000, guid: ba3660e45d1780b4b9fb3766813afe7d, type: 2}
   passIndex: 0
   bindDepthStencilAttachment: 0
   m_Version: 1

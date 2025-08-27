@@ -1173,19 +1173,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: de44a1d6b5e8ec3409a3f1e13947b163, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.247077
+      value: 0.521
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: de44a1d6b5e8ec3409a3f1e13947b163, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.15600002
+      value: 0.204
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: de44a1d6b5e8ec3409a3f1e13947b163, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.9749932
+      value: -2.545
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: de44a1d6b5e8ec3409a3f1e13947b163, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.4398396
+      value: -0.2232011
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: de44a1d6b5e8ec3409a3f1e13947b163, type: 3}
       propertyPath: m_LocalRotation.x
@@ -1193,7 +1193,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: de44a1d6b5e8ec3409a3f1e13947b163, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.89807636
+      value: -0.9747724
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: de44a1d6b5e8ec3409a3f1e13947b163, type: 3}
       propertyPath: m_LocalRotation.z
@@ -1205,7 +1205,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: de44a1d6b5e8ec3409a3f1e13947b163, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -232.187
+      value: -205.794
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: de44a1d6b5e8ec3409a3f1e13947b163, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -1215,6 +1215,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: uploads_files_2067353_Polly_Mesh_Blender_2-8
       objectReference: {fileID: 0}
+    - target: {fileID: 1693695680731010835, guid: de44a1d6b5e8ec3409a3f1e13947b163, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5896745888506867724, guid: de44a1d6b5e8ec3409a3f1e13947b163, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: c775d2bbc8e064746a84c07e1cb70c05, type: 2}
     - target: {fileID: 5917555185227571724, guid: de44a1d6b5e8ec3409a3f1e13947b163, type: 3}
       propertyPath: m_IsActive
       value: 1
