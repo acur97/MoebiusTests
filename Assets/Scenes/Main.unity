@@ -1091,7 +1091,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!23 &1317490967
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1214,6 +1214,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: de44a1d6b5e8ec3409a3f1e13947b163, type: 3}
       propertyPath: m_Name
       value: uploads_files_2067353_Polly_Mesh_Blender_2-8
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: de44a1d6b5e8ec3409a3f1e13947b163, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1693695680731010835, guid: de44a1d6b5e8ec3409a3f1e13947b163, type: 3}
       propertyPath: m_IsActive
