@@ -41,8 +41,8 @@ Material:
     - _MAX_DISTANCE: 1
     - _Offset: 16
     - _PatternIntensity: 1
-    - _PatternRepetition: 2
-    - _PatternRotate: -35.67
+    - _PatternRepetition: 1
+    - _PatternRotate: -20.01
     - _SAMPLES: 6
     - _SAMPLE_RAD: 0.01
     - _SCALE: 2.5
