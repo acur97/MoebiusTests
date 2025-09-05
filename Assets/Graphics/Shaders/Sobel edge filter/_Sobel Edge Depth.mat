@@ -41,7 +41,8 @@ Material:
     - _Distortion_Scale: 8.18
     - _Line_Power: -0.18
     - _Line_Thickness: 0.0006
-    - _Noise: 0.005
+    - _Noise: 0.01
+    - _Semi_Aliasing: 0.125
     - _Threshold: 0.011
     m_Colors: []
   m_BuildTextureStacks: []
