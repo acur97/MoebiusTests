@@ -7544,8 +7544,8 @@
     "m_ObjectId": "337bddc154434a14bc924676493e9487",
     "m_Title": "Semi Anti Aliasing",
     "m_Position": {
-        "x": 2099.000244140625,
-        "y": 4124.00048828125
+        "x": 2099.0,
+        "y": 4124.0
     }
 }
 
@@ -9482,8 +9482,8 @@
     "m_Value": 0.0006000000284984708,
     "m_FloatType": 1,
     "m_RangeValues": {
-        "x": -0.0020000000949949028,
-        "y": 0.0020000000949949028
+        "x": 0.0,
+        "y": 0.004999999888241291
     },
     "m_SliderType": 0,
     "m_SliderPower": 3.0,
@@ -17791,11 +17791,11 @@
     "m_Hidden": false,
     "m_PerRendererData": false,
     "m_customAttributes": [],
-    "m_Value": 0.05999999865889549,
+    "m_Value": 0.02500000037252903,
     "m_FloatType": 1,
     "m_RangeValues": {
         "x": 0.0,
-        "y": 0.5
+        "y": 0.02500000037252903
     },
     "m_SliderType": 0,
     "m_SliderPower": 3.0,
