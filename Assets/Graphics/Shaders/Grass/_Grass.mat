@@ -72,9 +72,9 @@ Material:
     m_Floats:
     - _Air_Parallax: 2
     - _Air_Saturate: 0.2
-    - _Air_Size: 2.5
+    - _Air_Size: 1
     - _Amplitude: 1
-    - _Color_Influence: 0.9
+    - _Color_Influence: 0.758
     - _Float: -0.5
     - _Float_1: 0.45
     - _QueueControl: 0
@@ -82,12 +82,16 @@ Material:
     - _Setps: 48
     - _Steps_Base: 24
     m_Colors:
-    - _Air_Speed: {r: 0.25, g: 0.02, b: 0, a: 0}
+    - _Air_Speed: {r: 0.51, g: -0.22, b: 0, a: 0}
     - _Air_Speed_2: {r: 0.1, g: 0, b: 0, a: 0}
-    - _Color: {r: 0.48333332, g: 0.68235296, b: 0.34117648, a: 1}
+    - _Color: {r: 0.7317827, g: 1, b: 0.5424528, a: 1}
+    - _Color_Base: {r: 0.17385623, g: 0.29803923, b: 0.14901961, a: 1}
+    - _Color_Blend: {r: 0, g: 0, b: 0, a: 1}
+    - _Color_Point: {r: 0.7490196, g: 0.7490196, b: 0.3764706, a: 1}
+    - _Color_Shadow: {r: 1, g: 0, b: 0, a: 1}
     - _Depth: {r: -1, g: 50, b: 0, a: 0}
     - _Tiling: {r: 8, g: 8, b: 0, a: 0}
-    - _Vector2: {r: 1, g: 1, b: 0, a: 0}
+    - _Vector2: {r: 15, g: 15, b: 0, a: 0}
     - _Vector2_1: {r: 0.2, g: 0.2, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
