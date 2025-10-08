@@ -16,8 +16,9 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
+  m_CustomRenderQueue: 2000
+  stringTagMap:
+    RenderType: Opaque
   disabledShaderPasses:
   - MOTIONVECTORS
   m_LockedProperties: 
@@ -99,6 +100,9 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
+    - _FresnelEdge: 1000
+    - _FresnelPower: 2
+    - _FresnelRange: 0.5
     - _GlossMapScale: 1
     - _Glossiness: 0.59999996
     - _GlossyReflections: 1
